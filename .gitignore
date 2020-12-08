@@ -1,3 +1,4 @@
 /.vs
 /AoC/bin
 /AoC/obj
+*.user
