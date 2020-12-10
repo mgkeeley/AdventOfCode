@@ -27,6 +27,7 @@ namespace AoC {
             Aoc2019.Day13();
             Aoc2019.Day14();
             Aoc2019.Day15();
+            Aoc2019.Day16();
         }
 
         private static void AoC_2020() {
@@ -40,6 +41,7 @@ namespace AoC {
             Aoc2020.Day6();
             Aoc2020.Day7();
             Aoc2020.Day8();
+            Aoc2020.Day9();
         }
     }
 }
