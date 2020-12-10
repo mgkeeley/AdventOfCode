@@ -21,7 +21,7 @@ namespace AoC {
         }
 
         public IntCode Reset() {
-            memory = new long[4096];
+            memory = new long[8192];
             program.CopyTo(memory, 0);
             pc = 0;
             argmode = 0;
