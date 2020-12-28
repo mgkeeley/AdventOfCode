@@ -146,7 +146,6 @@ namespace AoC
                     return 0;
             }
             throw new Exception("Whoops!");
-            return 0;
         }
     }
 }

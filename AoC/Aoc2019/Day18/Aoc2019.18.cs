@@ -13,6 +13,7 @@ namespace AoC
 {
     public partial class Aoc2019
     {
+        /*
         public class Memo {
             public int Steps;
             public string Trail;
@@ -71,8 +72,8 @@ namespace AoC
 
         public static void Day18() {
             Console.WriteLine("Day18: ");
-
-            string[] input = File.ReadAllLines("Aoc2019\\Day18\\test2.txt");
+            Stopwatch sw = Stopwatch.StartNew();
+            string[] input = File.ReadAllLines("Aoc2019\\Day18\\input.txt");
             int maxx = input[0].Length;
             int maxy = input.Length;
 
@@ -96,20 +97,27 @@ namespace AoC
             foreach(var key in keys.Values)
                 key.Next.AddRange(FindNext(key.Pos));
             HashSet<char> keyRing = new();
-            int overallBest = int.MaxValue;
-            string overallBestTrail = "";
             (int minSteps, string minTrail) = FindMinSteps(0, FindNext(start));
-            
-            Console.WriteLine($"{overallBest}: {overallBestTrail}");
+            sw.Stop();
+            Console.WriteLine($"{minSteps}: {minTrail} in {sw.ElapsedMilliseconds}");
+
+            //var nxt = FindNext(start);
+            //int total = 0;
+            //for (int i = 0; i < minTrail.Length; i++) {
+            //    var nextkey = nxt.First(nk => nk.Key.Tag == minTrail[i]);
+            //    total += nextkey.Steps;
+            //    Console.WriteLine($"{nextkey.Key.Tag}: +{nextkey.Steps} = {total}");
+            //    nxt = nextkey.Key.Next;
+            //}
 
             (int, string) FindMinSteps(int steps, List<NextKey> nextKeys) {
                 List<NextKey> options = nextKeys.Where(nk => !keyRing.Contains(nk.Key.Tag) && nk.RequiredKeys.All(rk => keyRing.Contains(rk))).ToList();
-                if (steps >= overallBest || options.Count == 0)
+                if (options.Count == 0)
                     return (steps, "");
                 int best = int.MaxValue;
                 string bestTrail = "";
                 foreach (var opt in options.OrderBy(nk => nk.Steps)) {
-                    Console.WriteLine($"Try {string.Concat(keyRing)} to {opt.Key.Tag} + {string.Concat(opt.CollectedKeys)}  {steps}+{opt.Steps}={steps + opt.Steps} ");
+                    //Console.WriteLine($"Try {string.Concat(keyRing)} to {opt.Key.Tag} + {string.Concat(opt.CollectedKeys)}  {steps}+{opt.Steps}={steps + opt.Steps} ");
 
                     List<char> toRemove = new();
                     foreach (var c in opt.CollectedKeys) {
@@ -120,27 +128,23 @@ namespace AoC
                     string trail;
                     if (opt.Key.TryGetMemo(keyRing, out Memo memo)) {
                         s = memo.Steps + steps + opt.Steps;
-                        trail = string.Concat(keyRing) + memo.Trail;
-                        Console.WriteLine($"  {string.Concat(keyRing)} = +{s - steps - opt.Steps} = {s} (-)");
+                        trail = string.Concat(toRemove) + memo.Trail;
+                        //Console.WriteLine($"  {string.Concat(keyRing)} = +{s - steps - opt.Steps} = {s} (-)");
                     } else {
                         (s, trail) = FindMinSteps(steps + opt.Steps, opt.Key.Next);
                         opt.Key.AddMemo(keyRing, s - steps - opt.Steps, trail);
-                        //trail = string.Concat(keyRing) + trail;
-                        Console.WriteLine($"  {string.Concat(keyRing)} = +{s - steps - opt.Steps} = {s} (+)");
+                        trail = string.Concat(toRemove) + trail;
+                        //Console.WriteLine($"  {string.Concat(keyRing)} = +{s - steps - opt.Steps} = {s} (+)");
                     }
-                    Console.WriteLine($"s={s} best={best} trail={bestTrail}");
+                    //Console.WriteLine($"s={s} best={best} trail={bestTrail}");
                     if (s < best) {
                         best = s;
                         bestTrail = trail;
-                        if (best < overallBest) {
-                            Console.WriteLine($"{string.Concat(keyRing)} = {best} **");
-                            overallBestTrail = bestTrail;
-                            overallBest = best;
-                        }
                     }
                     foreach (var c in toRemove)
                         keyRing.Remove(c);
                 }
+                // Console.WriteLine($" found best={best} trail={string.Concat(keyRing)}+{bestTrail}");
                 return (best, bestTrail);
             }
 
@@ -169,5 +173,6 @@ namespace AoC
                 return next;
             }
         }
+        */
     }
 }

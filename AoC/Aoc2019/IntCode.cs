@@ -20,9 +20,22 @@ namespace AoC {
             Reset();
         }
 
+        public bool IsBusy => !idle.IsSet;
+
+        public bool Running { get; private set; }
+
         public IntCode Reset() {
             memory = new long[8192];
             program.CopyTo(memory, 0);
+            pc = 0;
+            argmode = 0;
+            relbase = 0;
+            input = new BlockingCollection<long>();
+            idle.Set();
+            return this;
+        }
+
+        public IntCode FastReset() {
             pc = 0;
             argmode = 0;
             relbase = 0;
@@ -55,6 +68,7 @@ namespace AoC {
 
         public IntCode Run(Action<long> output = null) {
             idle.Reset();
+            Running = true;
             while (pc >= 0 && pc < memory.Length && memory[pc] != 99) {
                 int op = PCReadOpCode();
                 if (op == 1) {
@@ -103,6 +117,7 @@ namespace AoC {
             }
             if (memory[pc] != 99)
                 throw new Exception("Intcode pc address error");
+            Running = false;
             return this;
         }
 
